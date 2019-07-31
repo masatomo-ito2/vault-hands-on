@@ -4,7 +4,7 @@
 
 Vaultを手軽に始めるための簡単なハンズオンです。
 
-## 参考例
+## 参考
 
 1. Vault overview (Slide - 30min)
 2. [Vault server setup](https://github.com/masatomo-ito2/vault-hands-on/tree/master/vault_setup) (Hands-on - 15min)
@@ -16,4 +16,5 @@ Vaultを手軽に始めるための簡単なハンズオンです。
 8. (Dynamic secret, PKI, Cubbyhole if time allows)
 9. Q&A (rest of  time)
 
+## 参考
 
