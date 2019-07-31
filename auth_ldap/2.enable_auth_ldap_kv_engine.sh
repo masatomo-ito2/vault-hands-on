@@ -20,3 +20,4 @@ vault write auth/ldap-um/config \
     groupattr="${UM_GROUP_ATTR}" \
     insecure_tls=true
 
+vault secrets enable -path=secret kv
