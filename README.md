@@ -1,10 +1,10 @@
 # Vault hands-on
 
-## $BL\E*(B
+## 目的
 
-Vault$B$r<j7Z$K;O$a$k$?$a$N4JC1$J%O%s%:%*%s$G$9!#(B
+Vaultを手軽に始めるための簡単なハンズオンです。
 
-## $B;29M(B
+## 参考
 
 1. Vault overview (Slide - 30min)
 2. [Vault server setup](https://github.com/masatomo-ito2/vault-hands-on/tree/master/vault_setup) (Hands-on - 15min)
@@ -16,5 +16,5 @@ Vault$B$r<j7Z$K;O$a$k$?$a$N4JC1$J%O%s%:%*%s$G$9!#(B
 8. (Dynamic secret, PKI, Cubbyhole if time allows)
 9. Q&A (rest of  time)
 
-## $B;29M(B
+## 参考
 
