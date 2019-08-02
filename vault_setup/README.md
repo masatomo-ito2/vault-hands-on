@@ -2,7 +2,7 @@
 
 ### Vaultバイナリをダウンロード
 
-	[https://www.vaultproject.io/downloads.html](https://www.vaultproject.io/downloads.html)
+[https://www.vaultproject.io/downloads.html](https://www.vaultproject.io/downloads.html)
 
 ### Serverのスタート
 
