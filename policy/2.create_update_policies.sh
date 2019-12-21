@@ -2,6 +2,6 @@
 
 # Create policy
 
-vault policy write producer training_producer.hcl
-vault policy write consumer training_consumer.hcl
+vault policy write producer producer.hcl
+vault policy write consumer consumer.hcl
 

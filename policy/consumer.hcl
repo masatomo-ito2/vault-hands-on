@@ -1,10 +1,9 @@
 path "kv_training"
 {
-	capabilities = [ "list" ]
+capabilities = [ "list" ]
 }
 
 path "kv_training/consumer_*"
 {
-	capabilities = [ "read" ]
+capabilities = [ "read" ]
 }
-

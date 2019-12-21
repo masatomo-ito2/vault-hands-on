@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# only for consumer
-vault write kv_training/consumer_secret1 key=aaa
+vault write kv_training/consumer_username key=consumer
+vault write kv_training/consumer_password key=P@ssword
+vault write kv_training/trainer_username key=trainer
+vault write kv_training/trainer_password key=S3CR3T
 
-# soomething else
-vault write kv_training/terminator_secret1 key=ddd
-vault write kv_training/eliminator_secret1 key=ggg
 
