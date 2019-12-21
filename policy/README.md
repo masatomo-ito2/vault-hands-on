@@ -11,7 +11,7 @@ Capabilities  | 内容  |  対応するHTTP API method
 --|---|--
 create | データの作成を許可  | `POST` `PUT`
 read  | データの読み取りを許可  | `GET`
-update | データの変更を許可 |　`POST` `PUT`
+update | データの変更を許可 | `POST` `PUT`
 delete | データの削除を許可  | `DELETE`
 list  | Pathにあるデータのリストを表示  | `LIST`
 sudo  | `root-protected`のPathへのアクセスを許可  | n/a
@@ -298,3 +298,117 @@ Code: 403. Errors:
 
 ---
 ## Ex2. より細かいPolicyによる制御
+
+ここではPolicyによる、より細かい制御をやってみます。具体的には、以下のような制御を追加します。
+
+- Secretに必須のパラメータを設定する
+- SecretのKeyのパラメータに入れても良い値を指定する
+- SecretのKeyのパラメータに入れてはいけない値を指定する
+
+それでは一つづつやっていきましょう。
+
+---
+### Secretに必須のパラメータを設定する
+
+**前のエクササイズでConsumer tokenでログインしている場合は、rootもしくはPolicyを変更できる権限のTokenでログインし直して下さい。**
+
+まず新たにPolicyを作ります。
+このPolicyでは、`required_parameters`で必須のパラメータを指定しています。この例では、このSecretには`username`と`password`という2つのパラメータがないとErrorにする設定になります。
+
+```console
+# Policyの作成
+
+$ cat <<EOF>> producer2.hcl
+
+path "kv_training"
+{
+    capabilities = [ "list" ]
+}    
+
+path "kv_training/*"
+{
+    capabilities = [ "create", "read", "update", "delete", "list" ]
+    required_parameters = [ "username", "password" ]
+}
+EOF
+```
+
+つぎにこのPolicyをVaultに設定して、Tokenを作成し、そのTokenでログインします（以下の実行ログでは、これら3つを順番に行なっています)。
+
+```
+# Policyの登録
+
+$ vault policy write producer2 producer2.hcl
+Success! Uploaded policy: producer2
+
+# Tokenの作成
+
+$ vault token create -policy=producer2 -id=producer2_token
+WARNING! The following warnings were returned from Vault:
+
+  * Supplying a custom ID for the token uses the weaker SHA1 hashing instead
+  of the more secure SHA2-256 HMAC for token obfuscation. SHA1 hashed tokens
+  on the wire leads to less secure lookups.
+
+Key                  Value
+---                  -----
+token                producer2_token
+token_accessor       qF6HtnPM27VI4vAyU2mPMCBp
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "producer2"]
+identity_policies    []
+policies             ["default" "producer2"]
+
+# 作成したTokenでログイン
+
+$ vault login producer2_token
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                producer2_token
+token_accessor       qF6HtnPM27VI4vAyU2mPMCBp
+token_duration       767h56m53s
+token_renewable      true
+token_policies       ["default" "producer2"]
+identity_policies    []
+policies             ["default" "producer2"]
+
+```
+
+ここであえて、必須パラメータを1つ足りないSecretを書き込んでみます。
+
+```console
+$ vault write kv_training/new_secret username="foo"
+Error writing data to kv_training/new_secret: Error making API request.
+
+URL: PUT http://127.0.0.1:8200/v1/kv_training/new_secret
+Code: 403. Errors:
+
+* 1 error occurred:
+	* permission denied
+```
+
+予想通りErrorになりました。では、Policyで指定されている2つのパラメータで書き込んでみます。
+
+```console
+$ vault write kv_training/new_secret username="foo" password="bar"
+Success! Data written to: kv_training/new_secret
+```
+
+予想通り成功しました。
+
+> **注意：　上記の通りwriteについては想定どおりの挙動をしますが、現時点（Vault 1.3）ではReadについてもPolicyの制限が継承されてしまいReadができないというBugがあります。**
+
+---
+### SecretのKeyのパラメータに入れても良い値を指定する
+
+WIP
+
+---
+### SecretのKeyのパラメータに入れてはいけない値を指定する
+
+WIP
