@@ -54,7 +54,7 @@ Consumer  | Secretを利用する  | KVからSecretを読み出したい。た�
 以下のようなファイルを作成し、`producer.hcl`として保存して下さい。
 
 ```hcl
-$ cat <<EOF>> producer.hcl
+$ cat <<EOF> producer.hcl
 
 path "kv_training"
 {
@@ -77,7 +77,7 @@ EOF
 それでは次にConsumerのPolicyをconsumer.hclという名前で作成します。
 
 ```hcl
-$ cat <<EOF>> consumer.hcl
+$ cat <<EOF> consumer.hcl
 path "kv_training"
 {
 	capabilities = [ "list" ]
@@ -92,7 +92,7 @@ EOF
 
 このPolicyでは、
 
-- kv_training内のSecretのりストを表示できる
+- kv_training内のSecretのリストを表示できる
 - kv_training以下の`consumer_`で始まるSecretに対してのみ読み取りが出来る
 
 という制御になります。
